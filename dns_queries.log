@@ -1,0 +1,10 @@
+=== DNS Query at 2025-09-08T19:23:18.954419Z for www.google.com ===
+A (system): 142.250.192.68
+A records: ['142.250.192.68']
+MX records: []
+CNAME records: []
+=== DNS Query at 2025-09-08T19:24:54.970621Z for www.example.com ===
+A (system): 49.44.50.26
+A records: ['49.44.50.41', '49.44.50.26']
+MX records: []
+CNAME records: ['www.example.com-v4.edgesuite.net.']
