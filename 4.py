@@ -1,14 +1,39 @@
-from ftplib import FTP
+import dns.resolver
 
-def ftp_test():
+def dns_lookup():
     try:
-        with open("test.txt","w") as f: f.write("Hello FTP test")
+        domain = input("Enter a domain name (e.g., example.com): ").strip()
+        if not domain:
+            print("No domain entered.")
+            return
 
-        f = FTP("ftp.dlptest.com"); f.login("dlpuser", "rNrKYTX9g7z3RgJRmxWuGHbeu")
-        f.storbinary("STOR test.txt", open("test.txt","rb"))
-        f.retrbinary("RETR test.txt", open("out.txt","wb").write)
-        f.retrlines("LIST"); f.quit()
-        print("Uploaded, downloaded, listed.")
-    except Exception as e: print("Error:", e)
+        with open("dns.txt", "w") as f:
+            f.write(f"DNS records for {domain}:\n\n")
 
-ftp_test()
+            try:
+                f.write("A Records:\n")
+                for r in dns.resolver.resolve(domain, "A"):
+                    f.write(f"  {r}\n")
+            except:
+                f.write("  No A records found.\n")
+
+            try:
+                f.write("MX Records:\n")
+                for r in dns.resolver.resolve(domain, "MX"):
+                    f.write(f"  {r.exchange} (priority {r.preference})\n")
+            except:
+                f.write("  No MX records found.\n")
+
+            try:
+                f.write("CNAME Records:\n")
+                for r in dns.resolver.resolve(domain, "CNAME"):
+                    f.write(f"  {r}\n")
+            except:
+                f.write("  No CNAME records found.\n")
+
+        print("DNS records saved to dns.txt")
+
+    except Exception as e:
+        print("Error:", e)
+
+dns_lookup()
